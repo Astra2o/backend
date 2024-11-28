@@ -4,6 +4,7 @@
 import { validationResult } from "express-validator";
 import userModel from "./userModel.js";
 import { comparePassword, generateAuthToken, hashPassword, registerUserinDb } from "./userServices.js";
+import BlacklistedTokenModel from "./blacklistedTokenModel.js";
 
 /// user create
 
@@ -82,4 +83,19 @@ const loginUser =async (req,res)=>{
 
 }
 
-export {createUser,loginUser}
+
+
+const getUserProfile=(req,res)=>{
+
+    res.status(200).json(req.user)
+}
+
+const logoutUser= async (req,res)=>{
+
+    const token = req.headers?.authorization?.split(' ')[1] || req.cookies?.token 
+        const tokenBlack= await BlacklistedTokenModel.create({token})
+    res.clearCookie('token').status(200).json({msg:'you are logout sucessfully'});
+
+}
+
+export {createUser,loginUser,getUserProfile,logoutUser}
