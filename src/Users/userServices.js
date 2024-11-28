@@ -47,10 +47,10 @@ const generateAuthToken = (_id)=>{
 
 
 
-const comparePassword = async (password)=>{
-    return await bcrypt.compare(password,this.password)
+const comparePassword = async (password,userpassword)=>{
+    return await bcrypt.compare(password,userpassword)
 }
 
 
 
-export {registerUserinDb,hashPassword,generateAuthToken}
+export {registerUserinDb,hashPassword,generateAuthToken,comparePassword}
