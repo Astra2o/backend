@@ -23,6 +23,9 @@ const createUser = async (req,res)=>{
         
    
         const user = await registerUserinDb({firstname,lastname,email,password:hashedPassword})
+        if (user.alreadyRegister) {
+            return res.status(400).json({res:user})
+        }
         // console.log(user);
         
         const token = generateAuthToken(user._id);

@@ -5,14 +5,26 @@ import jwt from 'jsonwebtoken'
 
 // register services 
 
-const registerUserinDb = ({firstname,lastname,email,password})=>{
+const registerUserinDb = async ({firstname,lastname,email,password})=>{
     if (!firstname || !email || !password) {
         throw new Error("All field required");
             
     }
 
-    const user =  userModel.create({fullname:{firstname,lastname},email,password})
-    return user ;
+    const userAlready =await userModel.findOne({email})
+    
+    if (!userAlready) {
+        
+        const user =  userModel.create({fullname:{firstname,lastname},email,password})
+        return user ;
+        
+    }else{
+        // console.log(user);
+        console.log(userAlready);
+
+        const result={ alreadyRegister: true,msg:'user is already register'}
+        return result
+    }
 
 }
 
